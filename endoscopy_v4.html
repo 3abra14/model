@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>منظار الجهاز الهضمي — العيادة الرقمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f7ff;
+  --bg2:#e3f0fb;
+  --navy:#1a2a5e;
+  --teal:#0090b8;
+  --amber:#f59e0b;
+  --red:#dc2626;
+  --green:#059669;
+  --card:rgba(255,255,255,0.88);
+  --border:rgba(0,144,184,0.22);
+  --txt:#1a2a5e;
+  --sub:#4a6fa5;
+  --f:'Tajawal',sans-serif
+}
+html,body{height:100%;font-family:var(--f);background:var(--bg);color:var(--txt);overflow:hidden;direction:rtl}
+
+/* ── BACKGROUND ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 20%,rgba(0,150,200,.08) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 80%,rgba(245,158,11,.06) 0%,transparent 55%),
+    linear-gradient(160deg,#f0f7ff 0%,#e8f4fd 40%,#f5f0ff 100%);
+}
+
+/* ── SHELL ── */
+#app{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* ── HEADER ── */
+header{
+  flex-shrink:0;padding:15px 30px;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,0.03);
+  z-index:100;
+}
+#title-btn{
+  background:linear-gradient(135deg,var(--navy),#2c3e50);
+  border:none;border-radius:100px;padding:12px 40px;
+  font-family:var(--f);font-size:1.6rem;font-weight:900;
+  color:#fff;
+  box-shadow:0 15px 35px rgba(26,42,94,0.2);
+  cursor:pointer;
+}
+
+/* ── MAIN GRID ── */
+main{
+  flex:1;
+  display:grid;
+  grid-template-columns: 300px 1fr 300px;
+  gap:30px;
+  padding:20px 40px;
+  min-height:0;
+  overflow:hidden;
+}
+
+/* ── SIDEBARS ── */
+.bcol{display:flex;flex-direction:column;justify-content:center;gap:18px}
+.bcol-label{font-size:.75rem;font-weight:800;color:var(--sub);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:-5px}
+
+.fbtn{
+  font-family:var(--f);font-size:1rem;font-weight:700;color:var(--navy);
+  background:#fff;border:1px solid var(--border);border-radius:24px;
+  padding:18px;cursor:pointer;transition:all .3s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.04);
+  display:flex;align-items:center;gap:15px;width:100%;position:relative;
+}
+.fbtn:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(0,80,160,0.08);border-color:var(--teal)}
+.fbtn .ic{font-size:1.8rem}
+.fbtn-txt-wrap{display:flex;flex-direction:column;gap:2px;flex:1;text-align:right}
+.fbtn-title{font-size:1.02rem;color:var(--navy)}
+.fbtn-desc{font-size:.75rem;font-weight:400;color:var(--sub);line-height:1.3}
+
+/* ── CENTRE WRAPPER ── */
+.mwrap{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;background:#fff;border-radius:40px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.06);border:1px solid var(--border);
+  overflow:hidden;min-height:0;
+}
+.sbar{width:100%;text-align:center;padding:10px;flex-shrink:0;background:rgba(0,144,184,.06)}
+.sname{font-size:1.4rem;font-weight:800;color:var(--navy)}
+.sdesc{font-size:1rem;color:var(--sub);margin-top:2px}
+.sbadge{display:inline-block;background:var(--teal);color:#fff;font-size:0.8rem;font-weight:700;border-radius:20px;padding:2px 10px;margin-top:5px}
+
+#baby-wrap{position:relative;flex:1;display:flex;align-items:center;justify-content:center;width:100%;overflow:hidden}
+#baby-img{max-height:100%;max-width:100%;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 8px 20px rgba(0,100,180,.12))}
+#scope-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+
+/* ── SCRUBBER ── */
+.swrap{width:100%;padding:10px 20px 15px;background:rgba(255,255,255,.8);border-top:1px solid var(--border);flex-shrink:0}
+.sdots{display:flex;justify-content:space-between;margin-bottom:8px}
+.sdot{display:flex;flex-direction:column;align-items:center;cursor:pointer;gap:4px}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(0,144,184,.2);border:1.5px solid rgba(0,144,184,.3);transition:.25s}
+.sdot.on .dot{background:var(--teal);box-shadow:0 0 8px rgba(0,144,184,.4);transform:scale(1.3)}
+.dlbl{font-size:.75rem;color:var(--sub);text-align:center;max-width:80px}
+.sdot.on .dlbl{color:var(--teal);font-weight:700}
+
+.strk{position:relative;height:6px;background:rgba(0,144,184,.1);border-radius:10px;margin:10px 0}
+#sfill{position:absolute;top:0;right:0;bottom:0;background:var(--teal);border-radius:10px;transition:width .1s}
+#cursor{position:absolute;top:50%;right:0;width:18px;height:18px;background:var(--navy);border:3px solid #fff;border-radius:50%;transform:translate(50%,-50%);pointer-events:none;z-index:6;box-shadow:0 3px 10px rgba(0,0,0,0.2)}
+#scrubber{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:5}
+
+/* ── PANELS ── */
+#ov{position:fixed;inset:0;background:rgba(0,20,60,.3);backdrop-filter:blur(3px);z-index:190;opacity:0;pointer-events:none;transition:.3s}
+#ov.on{opacity:1;pointer-events:all}
+.panel{position:fixed;top:0;right:0;width:min(400px,90vw);height:100vh;background:#fff;z-index:200;transform:translateX(100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);display:flex;flex-direction:column}
+.panel.on{transform:translateX(0)}
+.ph{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#fff;position:sticky;top:0}
+.pt2{font-size:1.1rem;font-weight:800;color:var(--navy)}
+.px{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pb{padding:20px;flex:1;overflow-y:auto;line-height:1.8}
+.ibox{background:rgba(0,144,184,.06);padding:15px;border-radius:15px;margin-bottom:15px;font-size:.9rem}
+
+/* ── WELCOME ── */
+#wcard{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:24px;padding:30px;width:90%;max-width:400px;z-index:300;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.15);opacity:0;pointer-events:none;transition:.4s}
+#wcard.on{opacity:1;pointer-events:all}
+
+@media(max-width:1000px){
+  main{grid-template-columns:1fr;gap:20px;overflow-y:auto}
+  .bcol{order:2}
+  .mwrap{order:1;height:500px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <button id="title-btn" onclick="showW()">🔬 منظار الجهاز الهضمي في الأطفال</button>
+  </header>
+
+  <main>
+    <div class="bcol">
+      <div class="bcol-label">معلومات أساسية</div>
+      <button class="fbtn" onclick="openP('p1')">
+        <span class="ic">🔬</span>
+        <div class="fbtn-txt-wrap">
+          <div class="fbtn-title">ما هو المنظار؟</div>
+          <div class="fbtn-desc">تعرف على الأداة وكيفية عملها.</div>
+        </div>
+      </button>
+      <button class="fbtn" onclick="openP('p2')">
+        <span class="ic">❓</span>
+        <div class="fbtn-txt-wrap">
+          <div class="fbtn-title">لماذا نحتاجه؟</div>
+          <div class="fbtn-desc">دواعي الفحص والفوائد الطبية.</div>
+        </div>
+      </button>
+      <button class="fbtn" onclick="openP('p3')">
+        <span class="ic">📋</span>
+        <div class="fbtn-txt-wrap">
+          <div class="fbtn-title">التحضير للفحص</div>
+          <div class="fbtn-desc">تعليمات الصيام والتجهيز.</div>
+        </div>
+      </button>
+    </div>
+
+    <div class="mwrap">
+      <div class="sbar">
+        <div class="sname" id="sn">الاستعداد</div>
+        <div class="sdesc" id="sd">يُعطى الطفل دواء للاسترخاء</div>
+        <div class="sbadge" id="sbadge">المرحلة ١ / ٦</div>
+      </div>
+      <div id="baby-wrap">
+        <img id="baby-img" src="original_anatomy.png" alt="Baby Model">
+        <svg id="scope-svg" viewBox="0 0 1024 1024">
+          <defs>
+            <path id="refPath" d="M 515,378 C 515,410 515,445 515,479 S 518,510 519,521 S 530,545 537,552 S 560,570 567,579 S 565,600 559,608 S 540,620 532,620 S 500,615 491,613 S 475,608 468,608" fill="none"/>
+          </defs>
+          <path id="eTube" d="M 515,378 C 515,410 515,445 515,479 S 518,510 519,521 S 530,545 537,552 S 560,570 567,579 S 565,600 559,608 S 540,620 532,620 S 500,615 491,613 S 475,608 468,608" fill="none" stroke="#1a2a5e" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <circle id="camDot" cx="515" cy="378" r="14" fill="#fff" stroke="#0090b8" stroke-width="4"/>
+          <circle id="camLens" cx="515" cy="378" r="6" fill="#000"/>
+        </svg>
+      </div>
+      <div class="swrap">
+        <div class="sdots" id="sdots"></div>
+        <div class="strk">
+          <div id="sfill"></div>
+          <div id="cursor"></div>
+          <input type="range" id="scrubber" min="0" max="100" value="0" step="0.1" oninput="update(this.value)">
+        </div>
+      </div>
+    </div>
+
+    <div class="bcol">
+      <div class="bcol-label">الإجراء والتعافي</div>
+      <button class="fbtn" onclick="openP('p4')">
+        <span class="ic">😴</span>
+        <div class="fbtn-txt-wrap">
+          <div class="fbtn-title">هل يؤلم؟</div>
+          <div class="fbtn-desc">التخدير والراحة أثناء الفحص.</div>
+        </div>
+      </button>
+      <button class="fbtn" onclick="openP('p5')">
+        <span class="ic">🏥</span>
+        <div class="fbtn-txt-wrap">
+          <div class="fbtn-title">بعد المنظار</div>
+          <div class="fbtn-desc">تعليمات الإفاقة والعودة للمنزل.</div>
+        </div>
+      </button>
+      <button class="fbtn" onclick="openP('p6')">
+        <span class="ic">⚠️</span>
+        <div class="fbtn-txt-wrap">
+          <div class="fbtn-title">متى تتصل بنا؟</div>
+          <div class="fbtn-desc">علامات تتطلب استشارة الطبيب.</div>
+        </div>
+      </button>
+    </div>
+  </main>
+</div>
+
+<div id="ov" onclick="closeAll()"></div>
+
+<div class="panel" id="p1">
+  <div class="ph"><span class="pt2">🔬 ما هو المنظار؟</span><button class="px" onclick="closeP('p1')">✕</button></div>
+  <div class="pb"><div class="ibox">أنبوب رفيع مرن مزود بكاميرا دقيقة لرؤية الجهاز الهضمي من الداخل.</div></div>
+</div>
+<div class="panel" id="p2">
+  <div class="ph"><span class="pt2">❓ لماذا نحتاجه؟</span><button class="px" onclick="closeP('p2')">✕</button></div>
+  <div class="pb"><div class="ibox">يساعد الطبيب في تشخيص مشاكل المريء والمعدة والأمعاء بدقة عالية.</div></div>
+</div>
+<div class="panel" id="p3">
+  <div class="ph"><span class="pt2">📋 التحضير للفحص</span><button class="px" onclick="closeP('p3')">✕</button></div>
+  <div class="pb"><div class="ibox">يجب أن يكون الطفل صائماً لفترة يحددها الطبيب لضمان وضوح الرؤية.</div></div>
+</div>
+<div class="panel" id="p4">
+  <div class="ph"><span class="pt2">😴 هل يؤلم؟</span><button class="px" onclick="closeP('p4')">✕</button></div>
+  <div class="pb"><div class="ibox">لا، يتم الإجراء تحت تأثير مهدئ أو تخدير بسيط لضمان راحة الطفل تماماً.</div></div>
+</div>
+<div class="panel" id="p5">
+  <div class="ph"><span class="pt2">🏥 بعد المنظار</span><button class="px" onclick="closeP('p5')">✕</button></div>
+  <div class="pb"><div class="ibox">يبقى الطفل في غرفة الإفاقة لبعض الوقت ثم يمكنه العودة للمنزل في نفس اليوم.</div></div>
+</div>
+<div class="panel" id="p6">
+  <div class="ph"><span class="pt2">⚠️ متى تتصل بنا؟</span><button class="px" onclick="closeP('p6')">✕</button></div>
+  <div class="pb"><div class="ibox">اتصل بنا فوراً إذا شعر الطفل بألم شديد أو قيء مستمر أو حرارة عالية.</div></div>
+</div>
+
+<div id="wcard">
+  <h3>أهلاً بك</h3>
+  <p>استخدم الشريط بالأسفل لمتابعة خطوات الإجراء</p>
+  <button class="fbtn" style="margin-top:20px;justify-content:center" onclick="hideW()">بدء</button>
+</div>
+
+<script>
+const STAGES=[
+  {n:'الاستعداد', d:'يُعطى الطفل دواء للاسترخاء', v:0},
+  {n:'الإدخال', d:'يدخل المنظار بلطف من الفم', v:20},
+  {n:'المريء', d:'المرور عبر المريء بسلاسة', v:40},
+  {n:'المعدة', d:'الوصول للمعدة للفحص', v:65},
+  {n:'الاثني عشر', d:'فحص بداية الأمعاء الدقيقة', v:85},
+  {n:'السحب', d:'إخراج المنظار بسلام', v:100}
+];
+const AR=['١','٢','٣','٤','٥','٦'];
+
+const rp=document.getElementById('refPath');
+const tube=document.getElementById('eTube');
+const cd=document.getElementById('camDot');
+const cl=document.getElementById('camLens');
+const sn=document.getElementById('sn');
+const sd=document.getElementById('sd');
+const sb=document.getElementById('sbadge');
+const scr=document.getElementById('scrubber');
+const sf=document.getElementById('sfill');
+const csr=document.getElementById('cursor');
+const dots=document.getElementById('sdots');
+const TL=rp.getTotalLength();
+
+STAGES.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='sdot'+(i===0?' on':'');
+  d.innerHTML=`<div class="dot"></div><div class="dlbl">${s.n}</div>`;
+  d.onclick=()=>{scr.value=s.v;update(s.v)};
+  dots.appendChild(d);
+});
+
+function update(val){
+  val=+val;
+  const e= (val/100)*TL;
+  tube.style.strokeDasharray=e+' '+(TL-e);
+  const pt=rp.getPointAtLength(Math.max(0.1, e));
+  [cd,cl].forEach(n=>{n.setAttribute('cx',pt.x);n.setAttribute('cy',pt.y)});
+  
+  let si=0;
+  for(let i=STAGES.length-1;i>=0;i--){if(val>=STAGES[i].v){si=i;break}}
+  sn.textContent=STAGES[si].n;
+  sd.textContent=STAGES[si].d;
+  sb.textContent='المرحلة '+AR[si]+' / ٦';
+  sf.style.width=val+'%';
+  csr.style.right=val+'%';
+  document.querySelectorAll('.sdot').forEach((d,i)=>d.classList.toggle('on',i===si));
+}
+
+function openP(id){document.getElementById(id).classList.add('on');document.getElementById('ov').classList.add('on')}
+function closeP(id){document.getElementById(id).classList.remove('on');document.getElementById('ov').classList.remove('on')}
+function closeAll(){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));document.getElementById('ov').classList.remove('on')}
+function showW(){document.getElementById('wcard').classList.add('on');document.getElementById('ov').classList.add('on')}
+function hideW(){document.getElementById('wcard').classList.remove('on');document.getElementById('ov').classList.remove('on')}
+
+update(0);
+setTimeout(showW,500);
+</script>
+</body>
+</html>
